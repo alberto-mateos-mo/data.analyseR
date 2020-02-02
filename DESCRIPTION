@@ -1,0 +1,24 @@
+Package: data.analyseR
+Title: data.analyseR
+Version: 0.0.0.9000
+Authors@R: person('David', 'Mateos', email = 'cldav.privmath@gmail.com', role = c('cre', 'aut'))
+Description: App that analyse your data.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    shiny,
+    golem,
+    attempt,
+    DT,
+    glue,
+    htmltools,
+    processx,
+    readr,
+    haven,
+    readxl
+RoxygenNote: 7.0.2
+URL: https://github.com/alberto-mateos-mo/data.analyseR.git
+BugReports: https://github.com/alberto-mateos-mo/data.analyseR.git/issues
+Suggests: 
+    testthat
