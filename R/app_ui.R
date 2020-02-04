@@ -4,7 +4,7 @@ app_ui <- function() {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # List the first level UI elements here 
-    navbarPage(title = "Data analyser Toolkit",
+    navbarPage(title = "Data Analyser Toolkit",
                theme = shinythemes::shinytheme("superhero"),
                tabPanel("Data Validation",
                         includeCSS("www/customCSS.css"),
