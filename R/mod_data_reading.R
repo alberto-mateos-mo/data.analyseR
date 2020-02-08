@@ -89,6 +89,9 @@ mod_data_reading_server <- function(input, output, session){
     DataExplorer::introduce(userData())
   })
   
+  return({
+    userData
+  })
 }
     
 ## To be copied in the UI
