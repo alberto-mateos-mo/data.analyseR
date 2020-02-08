@@ -20,12 +20,13 @@ mod_data_reading_ui <- function(id){
     sidebarPanel(
       fileInput(ns("data"), label = "Upload your data file"),
       
-      h6("We support csv, sav, xlsx, txt, rda, rds"),
+      h6("We support almost all data formats"),
       
-      textOutput(ns("dValidation")) 
+      shinyWidgets::useSweetAlert() 
     ),
     
     col_4(
+      h3("Showing some of the columns"),
       DT::DTOutput(ns("tabla"), width = 800)
     )
   )
@@ -49,41 +50,37 @@ mod_data_reading_server <- function(input, output, session){
     
     validate(need(input$data, message = FALSE))
     
-    l <- length(unlist(strsplit(rlang::as_string(userFile()$datapath), ".", fixed = TRUE)))
-    ext <- tolower(unlist(strsplit(rlang::as_string(userFile()$datapath), ".", fixed = TRUE))[l])
     ufile <- userFile()$datapath
     
-    if(ext == "sav"){
-      df <- haven::read_sav(file = ufile, encoding = "UTF-8")
-      return(df)
-    }
-    if(ext == "csv"){
-      df <- read.csv(file = ufile, encoding = "UTF-8")
-      return(df)
-    }
-    if(ext == "xlsx"){
-      df <- readxl::read_xlsx(path = ufile)
-      return(df)
-    }
-    if(ext == "txt"){
-      df <- read.table(file = ufile, sep = " ", fileEncoding = "UTF-8")
-      return(df)
-    }
-    if(ext == "rds"){
-      df <- readRDS(file = ufile)
-      return(df)
-    }
-    else{
-      return("n")
+    try(rio::import(ufile))
+    
+  })
+
+  observe({
+    if(class(userData()) == "data.frame"){
+      shinyWidgets::sendSweetAlert(
+        session = session,
+        title = "Success !!",
+        text = "All in order",
+        type = "success"
+      )
+    }else{
+      shinyWidgets::sendSweetAlert(
+        session = session,
+        title = "Error !!",
+        text = "We do not support your data :(",
+        type = "error"
+      )
     }
   })
   
-  output$dValidation <- renderText({
-    if(class(userData()) == "character"){
-      "Data format not supported :("
-    }else{
-      "Data uploaded successfully :)"
-    }
+  observeEvent(input$success, {
+    sendSweetAlert(
+      session = session,
+      title = "Success !!",
+      text = "All in order",
+      type = "success"
+    )
   })
   
   output$tabla <- DT::renderDT({

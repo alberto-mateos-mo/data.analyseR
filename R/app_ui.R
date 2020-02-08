@@ -7,7 +7,7 @@ app_ui <- function() {
     navbarPage(title = "Data Analyser Toolkit",
                theme = shinythemes::shinytheme("superhero"),
                tabPanel("Data Validation",
-                        includeCSS("www/customCSS.css"),
+                        includeCSS(system.file("app/customCSS.css", package = "data.analyseR")),
                         mod_data_reading_ui("data_reading_ui_1")
                         ),
                tabPanel("Data Descriptives")
