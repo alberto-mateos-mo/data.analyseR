@@ -18,7 +18,8 @@ Imports:
     haven,
     readxl,
     rio,
-    shinyWidgets
+    shinyWidgets,
+    DataExplorer
 RoxygenNote: 7.0.2
 URL: https://github.com/alberto-mateos-mo/data.analyseR.git
 BugReports: https://github.com/alberto-mateos-mo/data.analyseR.git/issues

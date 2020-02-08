@@ -27,7 +27,9 @@ mod_data_reading_ui <- function(id){
     
     col_4(
       h3("Showing some of the columns"),
-      DT::DTOutput(ns("tabla"), width = 800)
+      DT::DTOutput(ns("tabla"), width = 800),
+      h5("Your data info:"),
+      tableOutput(ns("meta"))
     )
   )
 }
@@ -74,21 +76,17 @@ mod_data_reading_server <- function(input, output, session){
     }
   })
   
-  observeEvent(input$success, {
-    sendSweetAlert(
-      session = session,
-      title = "Success !!",
-      text = "All in order",
-      type = "success"
-    )
-  })
-  
   output$tabla <- DT::renderDT({
-    if(class(userData()) == "character") NULL
+    if(class(userData()) != "data.frame") NULL
     m <- min(ncol(userData()), 8)
     DT::datatable(userData()[,c(1:m)], rownames = F) %>%
       DT::formatStyle(backgroundColor = "#00274d",
                       columns = names(userData()[,c(1:m)]))
+  })
+  
+  output$meta <- renderTable({
+    if(class(userData()) != "data.frame") NULL
+    DataExplorer::introduce(userData())
   })
   
 }
