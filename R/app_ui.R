@@ -1,4 +1,4 @@
-#' @import shiny
+#' @import shiny rlang
 app_ui <- function() {
   tagList(
     # Leave this function for adding external resources
@@ -10,7 +10,8 @@ app_ui <- function() {
                         includeCSS(system.file("app/customCSS.css", package = "data.analyseR")),
                         mod_data_reading_ui("data_reading_ui_1")
                         ),
-               tabPanel("Data Descriptives")
+               tabPanel("Data Descriptives",
+                        mod_data_descrip_ui("data_descrip_ui_1"))
     )
   )
 }

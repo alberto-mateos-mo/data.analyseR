@@ -54,7 +54,10 @@ mod_data_reading_server <- function(input, output, session){
     
     ufile <- userFile()$datapath
     
-    try(rio::import(ufile))
+    df <- try(rio::import(ufile))
+    
+    df %>% 
+      janitor::clean_names()
     
   })
 

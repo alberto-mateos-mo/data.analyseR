@@ -16,7 +16,9 @@
 mod_data_descrip_ui <- function(id){
   ns <- NS(id)
   tagList(
-  
+    esquisse::dragulaInput(ns("test"), sourceLabel = "Variables", targetsLabels = c("x", "y", "fill", "colour"), 
+                           choices = c("")),
+    plotOutput(ns("res"))
   )
 }
     
@@ -28,6 +30,33 @@ mod_data_descrip_ui <- function(id){
     
 mod_data_descrip_server <- function(input, output, session, react){
   ns <- session$ns
+  
+  observe({
+    esquisse::updateDragulaInput(session, "test", choices = names(react()))
+  })
+  
+  # valores <- reactive({
+  #   x <- ifelse(is.null(input$test$target$x), NULL, rlang::parse_expr(input$test$target$x))
+  #   y <- ifelse(is.null(input$test$target$y), NULL, rlang::parse_expr(input$test$target$y))
+  #   fill <- ifelse(is.null(input$test$target$fill), NULL, rlang::parse_expr(input$test$target$fill))
+  #   colour <- ifelse(is.null(input$test$target$colour), NULL, rlang::parse_expr(input$test$target$colour))
+  #   
+  #   list(x, y, fill, colour)
+  # })
+  
+  output$res <- renderPlot({
+    x <- ifelse(is.null(input$test$target$x), 0, rlang::parse_expr(input$test$target$x))
+    y <- ifelse(is.null(input$test$target$y), 0, rlang::parse_expr(input$test$target$y))
+    fill <- ifelse(is.null(input$test$target$fill), 0, rlang::parse_expr(input$test$target$fill))
+    colour <- ifelse(is.null(input$test$target$colour), 0, rlang::parse_expr(input$test$target$colour))
+    
+    tipo <- which_plot(data = react(), xval = input$test$target$x, yval = input$test$target$y)
+    g <- crea_plot(xval = x, yval = y, 
+                   fillval = fill, colourval = colour, 
+                   tipo = tipo)
+    ggplot2::ggplot(react())+
+      g
+  })
 }
     
 ## To be copied in the UI
