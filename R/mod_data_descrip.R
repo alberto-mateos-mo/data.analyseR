@@ -35,15 +35,6 @@ mod_data_descrip_server <- function(input, output, session, react){
     esquisse::updateDragulaInput(session, "test", choices = names(react()))
   })
   
-  # valores <- reactive({
-  #   x <- ifelse(is.null(input$test$target$x), NULL, rlang::parse_expr(input$test$target$x))
-  #   y <- ifelse(is.null(input$test$target$y), NULL, rlang::parse_expr(input$test$target$y))
-  #   fill <- ifelse(is.null(input$test$target$fill), NULL, rlang::parse_expr(input$test$target$fill))
-  #   colour <- ifelse(is.null(input$test$target$colour), NULL, rlang::parse_expr(input$test$target$colour))
-  #   
-  #   list(x, y, fill, colour)
-  # })
-  
   output$res <- renderPlot({
     x <- ifelse(is.null(input$test$target$x), 0, rlang::parse_expr(input$test$target$x))
     y <- ifelse(is.null(input$test$target$y), 0, rlang::parse_expr(input$test$target$y))
