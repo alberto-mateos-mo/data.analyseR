@@ -8,5 +8,6 @@ golem::detach_all_attached()
 # Document and reload your package
 golem::document_and_reload()
 
+devtools::test()
 # Run the application
 data.analyseR::run_app()

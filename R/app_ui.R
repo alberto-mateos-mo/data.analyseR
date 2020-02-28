@@ -3,15 +3,18 @@ app_ui <- function() {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    theme = shinythemes::themeSelector(),
     # List the first level UI elements here 
     navbarPage(title = "Data Analyser Toolkit",
-               theme = shinythemes::shinytheme("superhero"),
-               tabPanel("Data Validation",
-                        includeCSS(system.file("app/customCSS.css", package = "data.analyseR")),
+               tabPanel("Data Upload",
                         mod_data_reading_ui("data_reading_ui_1")
                         ),
+               tabPanel("Data Format",
+                        mod_data_format_ui("data_format_ui_1")
+               ),
                tabPanel("Data Descriptives",
-                        mod_data_descrip_ui("data_descrip_ui_1"))
+                        mod_data_descrip_ui("data_descrip_ui_1")
+                        )
     )
   )
 }

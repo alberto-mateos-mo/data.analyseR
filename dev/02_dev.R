@@ -7,12 +7,13 @@
 
 ## 2.1 Add modules
 ## 
-golem::add_module( name = "data_reading" ) # Name of the module
-golem::add_module( name = "data_descrip" ) # Name of the module
+golem::add_module(name = "data_reading") # Name of the module
+golem::add_module(name = "data_descrip") # Name of the module
+golem::add_module(name = "data_format")
 
 ## 2.2 Add dependencies
 
-usethis::use_package( "readxl" ) # To call each time you need a new package
+usethis::use_package( "rhandsontable" ) # To call each time you need a new package
 
 ## 2.3 Add tests
 
