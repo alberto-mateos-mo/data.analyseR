@@ -23,7 +23,8 @@ Imports:
     magrittr,
     janitor,
     ggplot2,
-    caret
+    caret,
+    rhandsontable
 RoxygenNote: 7.0.2
 URL: https://github.com/alberto-mateos-mo/data.analyseR.git
 BugReports: https://github.com/alberto-mateos-mo/data.analyseR.git/issues
