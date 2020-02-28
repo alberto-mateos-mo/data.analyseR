@@ -24,13 +24,10 @@ mod_data_reading_ui <- function(id){
       
       shinyWidgets::useSweetAlert() 
     ),
-    
-    col_4(
-      h3("Showing some of the columns"),
-      DT::DTOutput(ns("tabla"), width = 800),
-      h5("Your data info:"),
-      tableOutput(ns("meta"))
+    mainPanel(
+        DT::DTOutput(ns("tabla"), width = 800)
     )
+    
   )
 }
     
@@ -81,15 +78,8 @@ mod_data_reading_server <- function(input, output, session){
   
   output$tabla <- DT::renderDT({
     if(class(userData()) != "data.frame") NULL
-    m <- min(ncol(userData()), 8)
-    DT::datatable(userData()[,c(1:m)], rownames = F) %>%
-      DT::formatStyle(backgroundColor = "#00274d",
-                      columns = names(userData()[,c(1:m)]))
-  })
-  
-  output$meta <- renderTable({
-    if(class(userData()) != "data.frame") NULL
-    DataExplorer::introduce(userData())
+    DT::datatable(userData(), rownames = F, 
+                  options = list(scrollX = TRUE, fixedColumns = TRUE))
   })
   
   return({
