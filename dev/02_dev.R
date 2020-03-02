@@ -13,7 +13,7 @@ golem::add_module(name = "data_format")
 
 ## 2.2 Add dependencies
 
-usethis::use_package( "rhandsontable" ) # To call each time you need a new package
+usethis::use_package( "bootstraplib" ) # To call each time you need a new package
 
 ## 2.3 Add tests
 
