@@ -24,7 +24,9 @@ Imports:
     janitor,
     ggplot2,
     caret,
-    rhandsontable
+    rhandsontable,
+    dplyr,
+    bootstraplib
 RoxygenNote: 7.0.2
 URL: https://github.com/alberto-mateos-mo/data.analyseR.git
 BugReports: https://github.com/alberto-mateos-mo/data.analyseR.git/issues
