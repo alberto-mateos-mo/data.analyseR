@@ -12,16 +12,20 @@ crea_plot <- function(xval, yval, fillval, colourval, tipo){
     return(NULL)
   }
   if(tipo == "density"){
-    g <- ggplot2::geom_density(ggplot2::aes((eval(xval))))
+    # g <- ggplot2::geom_density(ggplot2::aes((eval(xval))), fill = "#002B7A", colour = "#002B7A")
+    g <- ggplot2::geom_density(ggplot2::aes_string(xval), fill = "#002B7A", colour = "#002B7A")
     return(g)
   }
   if(tipo == "barplot"){
-    g <- ggplot2::geom_bar(ggplot2::aes(eval(xval), fill = eval(ifelse(is.null(fillval), "1", fillval))))
+    # g <- ggplot2::geom_bar(ggplot2::aes(eval(xval), fill = eval(ifelse(is.null(fillval), "1", fillval))))
+    g <- ggplot2::geom_bar(ggplot2::aes_string(xval, fill = ifelse(is.null(fillval), "1", fillval)))
     return(g)
   }
   if(tipo == "scatter"){
-    g <- ggplot2::geom_point(ggplot2::aes(x = eval(xval), y = eval(yval), 
-                                          colour = eval(ifelse(is.null(colourval), "1", colourval))))
+    # g <- ggplot2::geom_point(ggplot2::aes(x = eval(xval), y = eval(yval), 
+    #                                       colour = eval(ifelse(is.null(colourval), "1", colourval))))
+    g <- ggplot2::geom_point(ggplot2::aes_string(x = xval, y = yval, 
+                                          colour = ifelse(is.null(colourval), "1", colourval)))
   }
 }
 
