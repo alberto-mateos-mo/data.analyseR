@@ -16,7 +16,6 @@
 mod_data_reading_ui <- function(id){
   ns <- NS(id)
   tagList(
-    
     sidebarPanel(
       fileInput(ns("data"), label = "Upload your data file"),
       
@@ -27,7 +26,6 @@ mod_data_reading_ui <- function(id){
     mainPanel(
         DT::DTOutput(ns("tabla"), width = 800)
     )
-    
   )
 }
     
@@ -70,7 +68,7 @@ mod_data_reading_server <- function(input, output, session){
       shinyWidgets::sendSweetAlert(
         session = session,
         title = "Error !!",
-        text = "We do not support your data :(",
+        text = "We do not support your data, drop us a line if you like us to support your data :(",
         type = "error"
       )
     }
