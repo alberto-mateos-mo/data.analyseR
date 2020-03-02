@@ -16,16 +16,20 @@
 mod_data_reading_ui <- function(id){
   ns <- NS(id)
   tagList(
-    sidebarPanel(
+    # sidebarPanel
+    fluidRow(
+    col_4(
       fileInput(ns("data"), label = "Upload your data file"),
       
       h6("We support almost all data formats"),
       
       shinyWidgets::useSweetAlert() 
     ),
-    mainPanel(
+    #mainPanel
+    col_6(
         DT::DTOutput(ns("tabla"), width = 800)
     )
+    )#fluidRow
   )
 }
     

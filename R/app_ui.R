@@ -29,18 +29,18 @@ golem_add_external_resources <- function(){
     'www', system.file('app/www', package = 'data.analyseR')
   )
  
-  # bootstraplib::bs_theme_new()
-  # 
-  # bootstraplib::bs_theme_add_variables(`body-bg` = "#607AAC", `body-color` = "#FFFFFF", 
-  #                                      `input-border-color` = "#D59F0F", primary = "#D59F0F", 
-  #                                      default = "#002B7A", secondary = "#D59F0F", success = "#2B7A00", 
-  #                                      `enable-shadows` = TRUE, `enable-gradients` = TRUE)
+  bootstraplib::bs_theme_new(version = "4+3", bootswatch = "lux")
+  bootstraplib::bs_theme_add_variables(`font-size-base` = "1rem")
+  bootstraplib::bs_theme_add_variables(`body-color` = "#002B7A", 
+                         `input-border-color` = "#002B7A", primary = "#D59F0F", 
+                         default = "#D59F0F", secondary = "#D59F0F", `gray-900` = "#002B7A")
   tags$head(
     golem::activate_js(),
-    golem::favicon()
+    golem::favicon(),
+    bootstraplib::bootstrap(minified = FALSE)
     # Add here all the external resources
     # If you have a custom.css in the inst/app/www
     # Or for example, you can add shinyalert::useShinyalert() here
-    #tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    # tags$link(rel="stylesheet", type="text/css", href="www/bootstrap.min.css")
   )
 }

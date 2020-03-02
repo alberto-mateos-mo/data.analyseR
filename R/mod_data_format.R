@@ -16,15 +16,19 @@
 mod_data_format_ui <- function(id){
   ns <- NS(id)
   tagList(
-    sidebarPanel(
+    fluidRow(
+    # sidebarPanel
+    col_4(
       h4("Here you can choose the format of each column"),
       h6("You can skip this step by clicking the button and we'll guess column type."),
       h6("You can always come back if something went tricky ;)"),
       actionButton(ns("apply"), "Apply formats")
       ),
-    mainPanel(
+    # mainPanel
+    col_6(
       rhandsontable::rHandsontableOutput(ns("format"))
     )
+    )#fluidRow
   )
 }
     
