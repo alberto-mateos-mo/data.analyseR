@@ -1,9 +1,12 @@
 #' @import shiny rlang
 app_ui <- function() {
+  
+  # bootstraplib::bs_theme_new(bootswatch = NULL)
+  
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
-    theme = shinythemes::themeSelector(),
+    # bootstraplib::bootstrap(),
     # List the first level UI elements here 
     navbarPage(title = "Data Analyser Toolkit",
                tabPanel("Data Upload",
@@ -12,7 +15,7 @@ app_ui <- function() {
                tabPanel("Data Format",
                         mod_data_format_ui("data_format_ui_1")
                ),
-               tabPanel("Data Descriptives",
+               tabPanel("Data Explorer",
                         mod_data_descrip_ui("data_descrip_ui_1")
                         )
     )
@@ -26,6 +29,12 @@ golem_add_external_resources <- function(){
     'www', system.file('app/www', package = 'data.analyseR')
   )
  
+  # bootstraplib::bs_theme_new()
+  # 
+  # bootstraplib::bs_theme_add_variables(`body-bg` = "#607AAC", `body-color` = "#FFFFFF", 
+  #                                      `input-border-color` = "#D59F0F", primary = "#D59F0F", 
+  #                                      default = "#002B7A", secondary = "#D59F0F", success = "#2B7A00", 
+  #                                      `enable-shadows` = TRUE, `enable-gradients` = TRUE)
   tags$head(
     golem::activate_js(),
     golem::favicon()

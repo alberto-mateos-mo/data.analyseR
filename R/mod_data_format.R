@@ -18,6 +18,8 @@ mod_data_format_ui <- function(id){
   tagList(
     sidebarPanel(
       h4("Here you can choose the format of each column"),
+      h6("You can skip this step by clicking the button and we'll guess column type."),
+      h6("You can always come back if something went tricky ;)"),
       actionButton(ns("apply"), "Apply formats")
       ),
     mainPanel(
@@ -36,11 +38,8 @@ mod_data_format_server <- function(input, output, session, react){
   ns <- session$ns
   
   df_type <- reactive({
-    coltype <- unlist(lapply(react(), class))
-    coltype <- ifelse(coltype %in% c("numeric", "integer"), "numeric",
-                      ifelse(coltype %in% c("factor", "character"), "categorical", "other"))
     data.frame(variable = names(react()), 
-                     format = factor(coltype),
+                     format = factor("", levels = c("numeric", "categorical", "")),
                      stringsAsFactors = FALSE)
   })
   
@@ -48,9 +47,44 @@ mod_data_format_server <- function(input, output, session, react){
     rhandsontable::rhandsontable(df_type(), rowHeaders = NULL)
   })
   
-  # datos_f <- eventReactive(input$apply, {
-  # 
-  # })
+  datos_f <- eventReactive(input$apply, {
+    df <- react()
+    tmp <- rhandsontable::hot_to_r(input$format)
+    
+    for(i in 1:nrow(tmp)){
+      v <- which(names(react()) == tmp[i,1])
+      
+      if(tmp[i,2] == "numeric"){
+        df[,v] <- as.numeric(df[,v])
+      }
+      if(tmp[i,2] == "categorical"){
+        df[,v] <- as.factor(df[,v])
+      }
+      if(tmp[i,2] == ""){
+        df[,v] <- df[,v]
+      }
+    }
+    
+    df
+  })
+  
+  observe({
+    
+    if(!is.null(datos_f())){
+      shinyWidgets::sendSweetAlert(
+        session = session,
+        title = "Done !!",
+        text = "We have applied formats correctly",
+        type = "info"
+      )
+    }
+    
+  })
+  
+  return({
+    datos_f
+  })
+  
 }
     
 ## To be copied in the UI
