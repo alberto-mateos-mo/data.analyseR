@@ -18,7 +18,7 @@ mod_data_descrip_ui <- function(id){
   tagList(
     esquisse::dragulaInput(ns("test"), sourceLabel = "Variables", targetsLabels = c("x", "y", "fill", "colour"), 
                            choices = c("")),
-    plotOutput(ns("res"))
+    plotly::plotlyOutput(ns("res"))
   )
 }
     
@@ -35,18 +35,24 @@ mod_data_descrip_server <- function(input, output, session, react){
     esquisse::updateDragulaInput(session, "test", choices = names(react()))
   })
   
-  output$res <- renderPlot({
-    x <- ifelse(is.null(input$test$target$x), 0, rlang::parse_expr(input$test$target$x))
-    y <- ifelse(is.null(input$test$target$y), 0, rlang::parse_expr(input$test$target$y))
-    fill <- ifelse(is.null(input$test$target$fill), 0, rlang::parse_expr(input$test$target$fill))
-    colour <- ifelse(is.null(input$test$target$colour), 0, rlang::parse_expr(input$test$target$colour))
+  output$res <- plotly::renderPlotly({
+    # x <- ifelse(is.null(input$test$target$x), 0, rlang::parse_expr(input$test$target$x))
+    x <- input$test$target$x
+    # y <- ifelse(is.null(input$test$target$y), 0, rlang::parse_expr(input$test$target$y))
+    y <- input$test$target$y
+    # fill <- ifelse(is.null(input$test$target$fill), 0, rlang::parse_expr(input$test$target$fill))
+    fill <- input$test$target$fill
+    # colour <- ifelse(is.null(input$test$target$colour), 0, rlang::parse_expr(input$test$target$colour))
+    colour <- input$test$target$colour
     
     tipo <- which_plot(data = react(), xval = input$test$target$x, yval = input$test$target$y)
     g <- crea_plot(xval = x, yval = y, 
                    fillval = fill, colourval = colour, 
                    tipo = tipo)
-    ggplot2::ggplot(react())+
+    g <- ggplot2::ggplot(react())+
       g
+    
+    plotly::ggplotly(g)
   })
 }
     
