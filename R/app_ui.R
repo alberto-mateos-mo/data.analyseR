@@ -6,6 +6,20 @@ app_ui <- function() {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    tags$head(
+      tags$style(HTML(
+        "
+    .custom {
+      background-color: #D59F0F;
+      color: #FFFFFF;
+      cursor: move;
+      font-size: 120%;
+      overflow: hidden;
+      border-radius: 1px;
+    }
+    "
+      ))
+    ),
     # bootstraplib::bootstrap(),
     # List the first level UI elements here 
     navbarPage(title = "Data Analyser Toolkit",
@@ -17,6 +31,9 @@ app_ui <- function() {
                ),
                tabPanel("Data Explorer",
                         mod_data_descrip_ui("data_descrip_ui_1")
+                        ),
+               tabPanel("Dimensionality Reduction",
+                        mod_data_reduc_ui("data_reduc_ui_1")
                         )
     )
   )
