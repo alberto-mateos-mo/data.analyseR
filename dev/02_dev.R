@@ -10,6 +10,7 @@
 golem::add_module(name = "data_reading") # Name of the module
 golem::add_module(name = "data_descrip") # Name of the module
 golem::add_module(name = "data_format")
+golem::add_module(name = "data_reduc")
 
 ## 2.2 Add dependencies
 
