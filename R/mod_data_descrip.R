@@ -17,8 +17,8 @@ mod_data_descrip_ui <- function(id){
   ns <- NS(id)
   tagList(
     esquisse::dragulaInput(ns("test"), sourceLabel = "Variables", targetsLabels = c("x", "y", "fill", "colour"), 
-                           choices = c("")),
-    plotly::plotlyOutput(ns("res"))
+                           choices = c(""), replace = TRUE),
+    plotOutput(ns("res"), width = "800px")
   )
 }
     
@@ -32,10 +32,11 @@ mod_data_descrip_server <- function(input, output, session, react){
   ns <- session$ns
   
   observe({
-    esquisse::updateDragulaInput(session, "test", choices = names(react()))
+    esquisse::updateDragulaInput(session, "test", choiceValues = names(react()), choiceNames = badgeType(col_name = names(react())),
+                                 badge = FALSE)
   })
   
-  output$res <- plotly::renderPlotly({
+  output$res <- renderPlot({
     # x <- ifelse(is.null(input$test$target$x), 0, rlang::parse_expr(input$test$target$x))
     x <- input$test$target$x
     # y <- ifelse(is.null(input$test$target$y), 0, rlang::parse_expr(input$test$target$y))
@@ -50,9 +51,11 @@ mod_data_descrip_server <- function(input, output, session, react){
                    fillval = fill, colourval = colour, 
                    tipo = tipo)
     g <- ggplot2::ggplot(react())+
-      g
+      g+
+      d_theme()
     
-    plotly::ggplotly(g)
+    # plotly::ggplotly(g)
+    g
   })
 }
     
