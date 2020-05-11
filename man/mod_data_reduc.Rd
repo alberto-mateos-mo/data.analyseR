@@ -7,7 +7,7 @@
 \usage{
 mod_data_reduc_ui(id)
 
-mod_data_reduc_server(input, output, session)
+mod_data_reduc_server(input, output, session, react)
 }
 \arguments{
 \item{id}{shiny id}
