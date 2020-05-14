@@ -7,7 +7,7 @@
 \usage{
 mod_data_reg_models_ui(id)
 
-mod_data_reg_models_server(input, output, session)
+mod_data_reg_models_server(input, output, session, react)
 }
 \arguments{
 \item{id}{shiny id}

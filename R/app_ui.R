@@ -28,13 +28,17 @@ app_ui <- function() {
                         ),
                tabPanel("Data Format",
                         mod_data_format_ui("data_format_ui_1")
-               ),
+                        ),
                tabPanel("Data Explorer",
                         mod_data_descrip_ui("data_descrip_ui_1")
                         ),
-               tabPanel("Dimensionality Reduction",
-                        mod_data_reduc_ui("data_reduc_ui_1")
-                        )
+               navbarMenu("Stats Models",
+                          tabPanel("Dimensionality Reduction",
+                                   mod_data_reduc_ui("data_reduc_ui_1")
+                                   ),
+                          tabPanel("Regression models",
+                                   mod_data_reg_models_ui("data_reg_models_ui_1"))
+                          )
     )
   )
 }

@@ -30,7 +30,7 @@ mod_data_reduc_ui <- function(id){
       ),
       col_6(
         plotOutput(ns("pca")),
-        textOutput(ns("explain"))
+        verbatimTextOutput(ns("explain"))
       )
     )
   )

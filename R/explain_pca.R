@@ -14,13 +14,15 @@ explain_pca <- function(x){
   cv <- which(cumsum(var_exp)>=0.75)[1]
   
   if(iv == cv){
-    cat("The number of principal components that explain at least 10% of variance each is:", iv, "|", 
-          "And the number of components that explain at least 70% of cumulative variance is:", cv, "|",
-          "Your PCA results show that you need", iv, "components.")
+    explain <- c(paste("The number of principal components that explain at least 10% of variance each is:", iv),
+                 paste("The number of components that explain at least 70% of cumulative variance is:", cv),
+                 paste("Your PCA results show that you need", iv, "components."))
   }else if(iv != cv){
-    cat("The number of principal components that explain at least 10% of variance each is:", iv, "|", 
-          "And the number of components that explain at least 70% of cumulative variance is:", cv, "|",
-          "Your PCA results show that you need between",  min(c(iv, cv)), "and", max(c(iv, cv)), "components.")
+    explain <- c(paste("The number of principal components that explain at least 10% of variance each is:", iv),
+                 paste("The number of components that explain at least 70% of cumulative variance is:", cv),
+                 paste("Your PCA results show that you need between",  min(c(iv, cv)), "and", max(c(iv, cv)), "components."))
   }
+  
+  return(cat(explain, sep = "\n"))
   
 }
