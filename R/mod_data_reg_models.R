@@ -23,6 +23,7 @@ mod_data_reg_models_ui <- function(id){
                                choices = c(""), replace = FALSE) 
       )
     ),
+    shinyWidgets::switchInput(ns("type"), label = "Model", onLabel = "Linear", offLabel = "Logistic", onStatus = "muted", offStatus = "muted", value = TRUE),
     fluidRow(
       col_4(
         actionButton(ns("go"), "Run Model!")
@@ -58,7 +59,11 @@ mod_data_reg_models_server <- function(input, output, session, react){
     
     form <- as.formula(paste(paste0(input$vars$target$Dependent, collapse = ""), "~", paste0(input$vars$target$Independents, collapse = "+")))
     
-    run_regression(formula = form, data = react())
+    if(input$type == TRUE){
+      summarize_lm(formula = form, data = react())
+    }else if(input$type == FALSE){
+      summarize_logistic(formula = form, data = react())
+    }
     
   })
   

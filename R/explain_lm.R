@@ -11,7 +11,7 @@ explain_lm <- function(object){
   
   df <- data.frame("Variable" = vars, df)
   
-  df <- df %>% dplyr::mutate(signficative = ifelse(`Pr...t..` <= 0.05, 1, 0))
+  df <- df %>% dplyr::mutate(significative = ifelse(`Pr...t..` <= 0.05, 1, 0))
   
   betas <- df[,2]
   
@@ -21,10 +21,10 @@ explain_lm <- function(object){
   
   adj <- paste("Your model has an adjusted r-squared of:", round(summary(object)$adj.r.squared, 2))
   
-  n_sig <- sum(df$signficative)
+  n_sig <- sum(df$significative)
   
   if(n_sig == 0){
-    explain <- "Your model doesn't have any signficative variables at 0.05 level."
+    explain <- "Your model doesn't have any significative variables at 0.05 level."
   }else if(n_sig != 0){
     explain <- paste("Your model has", n_sig, "significative variables at 0.05 level.")
     
