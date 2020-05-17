@@ -36,8 +36,11 @@ app_ui <- function() {
                           tabPanel("Dimensionality Reduction",
                                    mod_data_reduc_ui("data_reduc_ui_1")
                                    ),
-                          tabPanel("Regression models",
-                                   mod_data_reg_models_ui("data_reg_models_ui_1"))
+                          tabPanel("Regression Models",
+                                   mod_data_reg_models_ui("data_reg_models_ui_1")
+                                   ),
+                          tabPanel("Clustering Models",
+                                   mod_data_clust_ui("data_clust_ui_1"))
                           )
     )
   )

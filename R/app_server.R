@@ -6,4 +6,5 @@ app_server <- function(input, output,session) {
   callModule(mod_data_descrip_server, "data_descrip_ui_1", react = datos_f)
   callModule(mod_data_reduc_server, "data_reduc_ui_1", react = datos_f)
   callModule(mod_data_reg_models_server, "data_reg_models_ui_1", react = datos_f)
+  callModule(mod_data_clust_server, "data_clust_ui_1", react = datos_f)
 }
