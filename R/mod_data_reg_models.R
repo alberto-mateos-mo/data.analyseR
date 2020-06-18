@@ -16,25 +16,38 @@
 mod_data_reg_models_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h4("Here you can explore regression models for your data."),
+    h4("Explore regression models for your data."),
     fluidRow(
       col_12(
         esquisse::dragulaInput(ns("vars"), sourceLabel = "Variables", targetsLabels = c("Dependent", "Independents"), 
                                choices = c(""), replace = FALSE) 
       )
     ),
-    shinyWidgets::switchInput(ns("type"), label = "Model", onLabel = "Linear", offLabel = "Logistic", onStatus = "muted", offStatus = "muted", value = TRUE),
+    shinyWidgets::radioGroupButtons(inputId = ns("type"), label = "Model:", choices = c("Linear", "Logistic"), status = "primary"),
     fluidRow(
       col_4(
         actionButton(ns("go"), "Run Model!")
       )
     ),
     fluidRow(align = "center",
-      col_6(tableOutput(ns("summ"))),
-      col_6(plotOutput(ns("reg_plot")))
+      col_6(
+          tableOutput(ns("summ"))
+      ),
+      col_6(
+        col_12(verbatimTextOutput(ns("reg_explain")))
+      )
     ),
     fluidRow(
-      col_12(verbatimTextOutput(ns("reg_explain")))
+      col_12(),
+      col_12(align = "center",
+        shinyWidgets::radioGroupButtons(ns("plot"), "Summary Plot to View:", 
+                                        choiceNames = c("Residuals vs. Fitted", "QQ-Plot", "Scale Location", "Residuals vs. Leverage"), 
+                                        choiceValues = c(1, 2, 3, 4),
+                                        individual = TRUE),
+        plotOutput(ns("reg_plot"), width = "800px"),
+        downloadButton(ns("plot_down"))
+      ),
+      col_12()
     )
   )
 }
@@ -59,24 +72,33 @@ mod_data_reg_models_server <- function(input, output, session, react){
     
     form <- as.formula(paste(paste0(input$vars$target$Dependent, collapse = ""), "~", paste0(input$vars$target$Independents, collapse = "+")))
     
-    if(input$type == TRUE){
-      summarize_lm(formula = form, data = react())
-    }else if(input$type == FALSE){
-      summarize_logistic(formula = form, data = react())
+    if(input$type == "Linear"){
+      summarised_lm(formula = form, data = react(), na.action = na.omit)
+    }else if(input$type == "Logistic"){
+      summarised_logistic(formula = form, data = react())
     }
     
-  })
-  
-  model_type <- reactive({
-    paste("We fiited a", results()$type, "model.", collapse = " ")
   })
   
   output$reg_explain <- renderPrint(
     results()
   )
   
+  reg_plot <- reactive({
+    req(input$go)
+    results()$plots[[as.numeric(input$plot)]]
+  })
+  
   output$reg_plot <- renderPlot(
-    results()$plots
+    reg_plot()
+  )
+  
+  output$plot_down <- downloadHandler(
+    filename = function() "reg_plot.png",
+    content = function(file){
+      device <- function(..., width, height) grDevices::png(..., width = width, height = height, res = 600, units = "in")
+      ggplot2::ggsave(file, plot = reg_plot(), device = device)
+    }
   )
   
   output$summ <- renderTable(

@@ -20,7 +20,7 @@ mod_data_reading_ui <- function(id){
     col_4(
       fileInput(ns("data"), label = "Upload your data file"),
       
-      h6("We support almost all data formats"),
+      h6("We support almost all data formats."),
       
       shinyWidgets::useSweetAlert() 
     ),

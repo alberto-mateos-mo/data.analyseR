@@ -1,5 +1,6 @@
 #' @import shiny
 app_server <- function(input, output,session) {
+  options(shiny.maxRequestSize=30*1024^2)
   # List the first level callModules here
   datos <- callModule(mod_data_reading_server, "data_reading_ui_1")
   datos_f <- callModule(mod_data_format_server, "data_format_ui_1", react = datos)

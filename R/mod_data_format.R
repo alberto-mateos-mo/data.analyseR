@@ -17,13 +17,13 @@ mod_data_format_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
+    col_12(h4("Here you can choose the format of each column if needed.")),
     col_4(
-      h4("Here you can choose the format of each column"),
-      h6("You can skip this step by clicking the button and we'll guess column type."),
-      h6("You can always come back if something went tricky ;)"),
+      h6("You can skip this step by clicking the Apply formats button and we'll guess column type."),
+      h6("You can always come back if something went tricky in another tab ;)"),
       actionButton(ns("apply"), "Apply formats")
       ),
-    col_6(
+    col_6(align = "center",
       rhandsontable::rHandsontableOutput(ns("format"))
     )
     )
@@ -70,9 +70,17 @@ mod_data_format_server <- function(input, output, session, react){
     df
   })
   
+  datos <- reactive({
+    if(input$apply == 0){
+      return(react())
+    }else if(input$apply != 0){
+      return(datos_f())
+    }
+  })
+  
   observe({
     
-    if(!is.null(datos_f())){
+    if(input$apply != 0){
       shinyWidgets::sendSweetAlert(
         session = session,
         title = "Done !!",
@@ -84,7 +92,7 @@ mod_data_format_server <- function(input, output, session, react){
   })
   
   return({
-    datos_f
+    datos
   })
   
 }

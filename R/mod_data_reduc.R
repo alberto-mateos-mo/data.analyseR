@@ -20,13 +20,21 @@ mod_data_reduc_ui <- function(id){
     #   selectInput(ns("t_red"), "Select reduction method", choices = c("PCA", "KPCA", "tSNE", "Factor Analysis"))
     # ),
     fluidRow(
+      col_12(
+        h4("Can your data be explained by a fewer number of variables?")
+      ),
+      col_12(h4("")),
       col_4(
-        h4("Here you can perform PCA analysis to your data."),
+        # h5("Here you can analyse how a PCA reduction performs in your data."),
         h6("Note: we are automatically selecting numeric variables only."),
-        actionButton(ns("run"), "Run PCA."),
         h4(""),
         selectizeInput(ns("vars"), "Variables to use:", choices = NULL, multiple = TRUE),
-        selectInput(ns("plot"), "Select the plot you want to see:", choices = c("Screeplot", "Individuals Plot", "Variables Plot"))
+        shiny::checkboxInput(ns("scale"), "Use scaled data", value = TRUE),
+        actionButton(ns("run"), "Run PCA."),
+        h4(""),
+        selectInput(ns("plot"), "Select the plot you want to see:", choices = c("Screeplot", "Individuals Plot", "Variables Plot")),
+        numericInput(ns("pca_num"), label = "Number of components to download:", value = NULL),
+        downloadButton(ns("pca_down"), label = "Download PCA")
       ),
       col_6(
         plotOutput(ns("pca")),
@@ -53,6 +61,7 @@ mod_data_reduc_server <- function(input, output, session, react){
   
   observe({
     updateSelectizeInput(session, "vars", choices = names(df()))
+    updateNumericInput(session, "pca_num", value = 1, min = 1, max = ncol(df()), step = 1)
   })
   
   results <- eventReactive(input$run, {
@@ -60,11 +69,11 @@ mod_data_reduc_server <- function(input, output, session, react){
     #   return()
     # }
     if(is.null(input$vars)){
-      return(reduce_pca(df(), retx = TRUE))
+      return(summarised_pca(df(), retx = TRUE, scale. = input$scale))
     }else if(!is.null(input$vars)){
       i <- which(names(df()) %in% input$vars)
       df <- df()[,i]
-      return(reduce_pca(df, retx = TRUE))
+      return(summarised_pca(df, retx = TRUE, scale. = input$scale))
     }
     
   })
@@ -81,9 +90,25 @@ mod_data_reduc_server <- function(input, output, session, react){
     }
   })
   
+  pca_data <- reactive({
+    results()$pca$x[,c(1:input$pca_num)]
+  })
+  
   output$explain <- renderPrint({
     explain_pca(results()$pca)
   })
+  
+  output$pca_down <- downloadHandler(
+    filename = function(){
+      "pca_data.csv"
+    },
+    
+    content = function(file){
+      write.csv(pca_data(), file, row.names = FALSE)
+    },
+    
+    contentType = "text/csv"
+  )
   
 }
     

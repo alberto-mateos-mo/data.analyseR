@@ -8,7 +8,7 @@
 #'
 
 crea_plot <- function(xval, yval, fillval, colourval, tipo){
-  if(tipo == "none"){
+  if(tipo == "none" | is.null(tipo)){
     return(NULL)
   }
   if(tipo == "density"){
@@ -43,6 +43,7 @@ crea_plot <- function(xval, yval, fillval, colourval, tipo){
     
     return(g)
   }
+  
 }
 
 #' Function that selects "best" possible plot
@@ -79,6 +80,8 @@ which_plot <- function(data, xval, yval){
   }
   if(is.factor(tmp$x) & is.factor(tmp$y)){
     return("ballon")
+  }else{
+    return(NULL)
   }
 }
 
