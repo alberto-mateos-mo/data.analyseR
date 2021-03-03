@@ -53,7 +53,7 @@ golem_add_external_resources <- function(){
   #   'www', system.file('app/www', package = 'data.analyseR')
   # )
  
-  theme <- bslib::bs_global_theme(version = "4", bootswatch = "lux") %>%
+  theme <- bslib::bs_theme(version = "4", bootswatch = "lux") %>%
     bslib::bs_add_variables("font-size-base" = "1rem",
                                    "body-color" = "#002B7A",
                                    "input-border-color" = "#002B7A",
