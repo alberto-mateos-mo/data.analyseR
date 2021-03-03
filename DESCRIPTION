@@ -26,12 +26,12 @@ Imports:
     caret,
     rhandsontable,
     dplyr,
-    bootstraplib,
     plotly,
     esquisse,
     ggridges,
     factoextra,
-    ggfortify
+    ggfortify,
+    bslib
 RoxygenNote: 7.1.0
 URL: https://github.com/alberto-mateos-mo/data.analyseR.git
 BugReports: https://github.com/alberto-mateos-mo/data.analyseR.git/issues
