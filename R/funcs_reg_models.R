@@ -3,6 +3,7 @@
 #' @param formula An object of class formula
 #' @param data A data frame with data
 #' @param ... other params to be passed to lm()
+#' @import ggfortify
 #' @export
 
 summarised_lm <- function(formula, data, ...){
@@ -62,7 +63,7 @@ explain_lm <- function(object){
                         }
                       },
                       x = betas)
-    explain <- c(explain, "-", unlist(details))
+    explain <- c(explain, "-", unlist(details), "*caeteris paribus*")
   }
   
   explain <- c(adj, explain)
@@ -76,6 +77,7 @@ explain_lm <- function(object){
 #' @param formula An object of class formula
 #' @param data A data frame with data
 #' @param ... other params to be passed to glm()
+#' @import ggfortify
 #' @export
 #' 
 
