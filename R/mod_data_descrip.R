@@ -21,9 +21,10 @@ mod_data_descrip_ui <- function(id){
     ),
     esquisse::dragulaInput(ns("test"), sourceLabel = "Variables", targetsLabels = c("x", "y", "fill", "colour"), 
                            choices = c(""), replace = TRUE),
+    actionButton(ns("other_plot"), "Next possible plot."),
     col_12(align = "center",
-      downloadButton(ns("plot_down"), label = "Download Plot"),
-      plotOutput(ns("res"), width = "800px")
+      plotly::plotlyOutput(ns("res"), width = "800px"),
+      downloadButton(ns("plot_down"), label = "Download Plot")
     )
   )
 }
@@ -43,32 +44,52 @@ mod_data_descrip_server <- function(input, output, session, react){
   })
   
    plotplot <- reactive({
-    # x <- ifelse(is.null(input$test$target$x), 0, rlang::parse_expr(input$test$target$x))
     x <- input$test$target$x
-    # y <- ifelse(is.null(input$test$target$y), 0, rlang::parse_expr(input$test$target$y))
     y <- input$test$target$y
-    # fill <- ifelse(is.null(input$test$target$fill), 0, rlang::parse_expr(input$test$target$fill))
     fill <- input$test$target$fill
-    # colour <- ifelse(is.null(input$test$target$colour), 0, rlang::parse_expr(input$test$target$colour))
     colour <- input$test$target$colour
     
     tipo <- which_plot(data = react(), xval = input$test$target$x, yval = input$test$target$y)
    
     tryCatch( g <- crea_plot(xval = x, yval = y, 
                              fillval = fill, colourval = colour, 
-                             tipo = tipo), 
+                             tipo = tipo, subtipo = input$other_plot), 
              error = function(e) stop("An error ocurred, we probably mis guessed variable type, may be you want to configure formats in DATA FORMAT tab."))
     
     g <- ggplot2::ggplot(react())+
       g+
       d_theme()
     
-    # plotly::ggplotly(g)
-    g
+    return(list(gg = g, tipo = tipo))
   })
   
-  output$res <- renderPlot({
-    plotplot()
+  output$res <- plotly::renderPlotly({
+    plotly::ggplotly(plotplot()$gg)
+  })
+  
+  # choices <- observe({
+  #   tryCatch(
+  #     if(plotplot()$tipo == "scatter-line"){
+  #       return(c("points", "line"))
+  #     }
+  #     else{
+  #       return(NULL)
+  #     },
+  #     error = function(e) NULL
+  #   )
+  # })
+
+  observe({
+    choices <- NULL
+    tryCatch(
+        if(plotplot()$tipo == "scatter-line"){
+          choices <- c("points", "line")
+        },
+        error = function(e) NULL
+      )
+    # if(!is.null(choices())){
+      updateSelectInput(session, "other_plot", choices = choices)
+    # }
   })
   
   output$plot_down <- downloadHandler(
