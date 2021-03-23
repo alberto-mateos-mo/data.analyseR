@@ -54,7 +54,8 @@ mod_data_reading_server <- function(input, output, session){
     df <- try(rio::import(ufile))
     
     df %>% 
-      janitor::clean_names()
+      janitor::clean_names() %>% 
+      dplyr::mutate(index = 1:dplyr::n())
     
   })
 
