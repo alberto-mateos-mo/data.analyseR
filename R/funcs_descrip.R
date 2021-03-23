@@ -5,36 +5,43 @@
 #' @param fillvall variable for filling barplots
 #' @param colourval variable for colouring plots
 #' @param tipo Character the plot to be created
+#' @param subtipo Character, alternatives for plots when possible
 #'
 
-crea_plot <- function(xval, yval, fillval, colourval, tipo){
+crea_plot <- function(xval, yval, fillval, colourval, tipo, subtipo = NULL){
   if(tipo == "none" | is.null(tipo)){
     return(NULL)
   }
   if(tipo == "density"){
-    # g <- ggplot2::geom_density(ggplot2::aes((eval(xval))), fill = "#002B7A", colour = "#002B7A")
     g <- ggplot2::geom_density(ggplot2::aes_string(xval), fill = "#002B7A", colour = "#002B7A")
     return(g)
   }
   if(tipo == "barplot"){
-    # g <- ggplot2::geom_bar(ggplot2::aes(eval(xval), fill = eval(ifelse(is.null(fillval), "1", fillval))))
     g <- ggplot2::geom_bar(ggplot2::aes_string(xval, fill = ifelse(is.null(fillval), "1", fillval)))
     return(g)
   }
-  if(tipo == "scatter"){
-    # g <- ggplot2::geom_point(ggplot2::aes(x = eval(xval), y = eval(yval), 
-    #                                       colour = eval(ifelse(is.null(colourval), "1", colourval))))
+  if(tipo == "scatter-line" & subtipo == 0){
+    g <- ggplot2::geom_point(ggplot2::aes_string(x = xval, y = yval, 
+                                                 colour = ifelse(is.null(colourval), "1", colourval)), size = 3)
+    return(g)
+  }
+  if(tipo == "scatter-line" & subtipo%%2 == 0){
     g <- ggplot2::geom_point(ggplot2::aes_string(x = xval, y = yval, 
                                           colour = ifelse(is.null(colourval), "1", colourval)), size = 3)
     return(g)
   }
+  if(tipo == "scatter-line" & subtipo%%2 == 1){
+    g <- ggplot2::geom_line(ggplot2::aes_string(x = xval, y = yval, 
+                                                 colour = ifelse(is.null(colourval), "1", colourval)), size = 1)
+    return(g)
+  }
   if(tipo == "g_density1"){
-    g <- ggridges::geom_density_ridges(ggplot2::aes_string(x = xval, y = yval))
+    g <- ggplot2::geom_density(ggplot2::aes_string(x = xval, group = yval, fill = yval, colur = yval), alpha = 0.5)
     
     return(g)
   }
   if(tipo == "g_density2"){
-    g <- ggridges::geom_density_ridges(ggplot2::aes_string(x = yval, y = xval))
+    g <- ggplot2::geom_density(ggplot2::aes_string(x = yval, group = xval, fill =xval, colour = xval), alpha = 0.5)
     
     return(g)
   }
@@ -70,7 +77,7 @@ which_plot <- function(data, xval, yval){
     }
   }
   if(is.numeric(tmp$x) & is.numeric(tmp$y)){
-    return("scatter")
+    return("scatter-line")
   }
   if(is.numeric(tmp$x) & is.factor(tmp$y)){
     return("g_density1")
