@@ -4,7 +4,7 @@
 \alias{crea_plot}
 \title{Function to create geoms}
 \usage{
-crea_plot(xval, yval, fillval, colourval, tipo)
+crea_plot(xval, yval, fillval, colourval, tipo, subtipo = NULL)
 }
 \arguments{
 \item{xval}{x input for the plot}
@@ -14,6 +14,8 @@ crea_plot(xval, yval, fillval, colourval, tipo)
 \item{colourval}{variable for colouring plots}
 
 \item{tipo}{Character the plot to be created}
+
+\item{subtipo}{Character, alternatives for plots when possible}
 
 \item{fillvall}{variable for filling barplots}
 }
